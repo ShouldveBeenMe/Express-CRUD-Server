@@ -25,7 +25,9 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@types/node": "^13.9.1",
     "express": "^4.17.1",
-    "mongoose": "^5.9.3"
+    "mongoose": "^5.9.3",
+    "node": "^13.10.1"
   }
 }
