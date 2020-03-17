@@ -12,10 +12,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var bodyParser = __importStar(require("body-parser"));
+var mongoose = __importStar(require("mongoose"));
+var router_1 = require("./router");
+var portToListen = process.env.PORT || 5000;
 var app = express_1.default();
+var connection = mongoose.Connection;
+var dbURL = "mongodb://localhost/groupsDB";
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(router_1.AppRouter);
+app.listen();
 app.use(bodyParser.json());
 app.post('/', function (request, response) {
     response.send(request.body);
 });
-app.listen(5000);
+app.listen(portToListen, function () { return console.log("Listening on port " + portToListen); });
 //# sourceMappingURL=server.js.map
