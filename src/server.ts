@@ -1,7 +1,12 @@
-// function greeter(person: string) {
-//     return `Hello, ${person}`;
-// }
-
-// const user = [0, 1, 2];
-
-// document.body.textContent = greeter();
+import express from 'express';
+import * as bodyParser from 'body-parser';
+ 
+const app = express();
+ 
+app.use(bodyParser.json());
+ 
+app.post('/', (request, response) => {
+  response.send(request.body);
+});
+ 
+app.listen(5000);

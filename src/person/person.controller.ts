@@ -1,11 +1,11 @@
 
 import * as mongoose from 'mongoose';
-import { PersonSchema } from './person.model';
+import  {PersonSchema} from './person.model';
 import { Request, Response } from 'express';
 
 const StudentMongooseModel = mongoose.model('Student', PersonSchema);
 
-export class StudentController { 
+export class PersonController { 
 
     public addNewStudent (req: Request, res: Response) {                
         let newStudent = new StudentMongooseModel(req.body);
