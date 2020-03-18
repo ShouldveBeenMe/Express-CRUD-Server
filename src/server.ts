@@ -9,8 +9,6 @@ const DEFAULT_PORT = configFile.DEFAULT_PORT;
 
 const portToListen = process.env.PORT || DEFAULT_PORT;
 const app = express();
-const connection = mongoose.Connection;
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
