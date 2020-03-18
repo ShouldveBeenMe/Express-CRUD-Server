@@ -1,9 +1,9 @@
 import express from 'express';
 import * as bodyParser from 'body-parser';
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import {AppRouter} from './router';
-const configFile = require('./config');
-const index = require('./index');
+import * as configFile from './config';
+import * as index from './index';
 
 const DEFAULT_PORT = configFile.DEFAULT_PORT;
 
@@ -19,6 +19,6 @@ app.listen()
 app.use(bodyParser.json());
  
  
-app.listen(portToListen, () => console.log(`Listening on port ${portToListen}`));
+app.listen(portToListen, () => console.log(`Listening on port ${portToListen}\n`));
 
 index.connectToMongo();
