@@ -1,15 +1,13 @@
 
 import * as mongoose from 'mongoose';
-import  {PersonSchema} from './person.model';
+import  {personModel} from './person.model';
 import { Request, Response } from 'express';
-
-const PersonMongooseModel = mongoose.model('Student', PersonSchema);
 
 export class PersonController { 
 
     static addPerson (req: Request, res: Response) {   
 
-        let newPerson = new PersonMongooseModel(req.body);
+        let newPerson = new personModel(req.body);
 
         newPerson.save((err, data) => {
             if (err){
@@ -20,7 +18,7 @@ export class PersonController {
     }
 
     static getPerson (req: Request, res: Response) {           
-        PersonMongooseModel.find({}, (err, data) => {
+        personModel.find({}, (err, data) => {
             if (err){
                 res.send(err);
             }
@@ -30,7 +28,7 @@ export class PersonController {
 
 
     static updatePerson (req: Request, res: Response) {           
-        PersonMongooseModel.findOneAndUpdate({ _id: req.params.id }, req.body, 
+        personModel.findOneAndUpdate({ _id: req.params.id }, req.body, 
             (err, data) => {
             if (err){
                 res.send(err);
@@ -40,7 +38,7 @@ export class PersonController {
     }
 
     static deletePerson(req: Request, res: Response) {           
-        PersonMongooseModel.findOneAndRemove({ _id: req.params.id }, (err, data) => {
+        personModel.findOneAndRemove({ _id: req.params.id }, (err, data) => {
             if (err){
                 res.send(err);
             }

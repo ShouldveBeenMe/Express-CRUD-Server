@@ -3,11 +3,12 @@ import Person from './person.interface';
 
 const Schema = mongoose.Schema;
 
-export const PersonSchema = new Schema({
+const personSchema = new Schema({
     name: {type: String, required: true, max: 100},
     id: {type: Number, required: true},
 });
 
 
 // Export the model
-// module.exports = mongoose.model('Person', PersonSchema);
+export const personModel = mongoose.model<Person & mongoose.Document>('Person', personSchema);
+ 
