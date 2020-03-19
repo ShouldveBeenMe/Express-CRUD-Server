@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
-import {personModel} from './person.model';
+import { PersonModel } from './person.model';
 import Person from './person.interface';
- 
-function createPerson(request: Request, response: Response) {
-  const personData: Person = request.body;
-  const createdPost = new personModel(personData);
-  createdPost.save()
-    .then(savedPost => {
-      response.send(savedPost);
+
+function createPerson(request: Request, response: Response): void {
+    const personData: Person = request.body;
+    const createdPerson = new PersonModel(personData);
+    createdPerson.save().then(createdPerson => {
+      response.send(createdPerson);
     })
 }

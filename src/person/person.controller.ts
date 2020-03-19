@@ -1,52 +1,47 @@
-
-import * as mongoose from 'mongoose';
-import  {personModel} from './person.model';
+// import * as mongoose from 'mongoose';
 import { Request, Response } from 'express';
+import { PersonModel } from './person.model';
 
-export class PersonController { 
+export default class PersonController {
+    static addPerson(req: Request, res: Response): void {
+        const newPerson = new PersonModel(req.body);
 
-    static addPerson (req: Request, res: Response) {   
-
-        let newPerson = new personModel(req.body);
-
-        newPerson.save((err, data) => {
-            if (err){
-                res.send(err);
-            }    
-            res.json(data);
-        });
-    }
-
-    static getPerson (req: Request, res: Response) {           
-        personModel.find({}, (err, data) => {
-            if (err){
+        newPerson.save((err: Error, data) => {
+            if (err) {
                 res.send(err);
             }
             res.json(data);
         });
     }
 
-
-    static updatePerson (req: Request, res: Response) {           
-        personModel.findOneAndUpdate({ _id: req.params.id }, req.body, 
-            (err, data) => {
-            if (err){
+    static getPerson(req: Request, res: Response): void {
+        PersonModel.find({}, (err: Error, data) => {
+            if (err) {
                 res.send(err);
             }
             res.json(data);
         });
     }
 
-    static deletePerson(req: Request, res: Response) {           
-        personModel.findOneAndRemove({ _id: req.params.id }, (err, data) => {
-            if (err){
+    static updatePerson(req: Request, res: Response): void {
+        PersonModel.findOneAndUpdate({ _id: req.params.id }, req.body, (err: Error, data) => {
+            if (err) {
                 res.send(err);
             }
-            res.json({ message: 'Successfully deleted student!'});
+            res.json(data);
         });
     }
 
-    // public generateDummyData (req: Request, res: Response) {     
+    static deletePerson(req: Request, res: Response): void {
+        PersonModel.findOneAndRemove({ _id: req.params.id }, (err: Error, data) => {
+            if (err) {
+                res.send(err);
+            }
+            res.json({ message: 'Successfully deleted student!' });
+        });
+    }
+
+    // public generateDummyData (req: Request, res: Response) {
     //     var data = [
     //         {
     //         "FirstName":"Sally",
@@ -75,13 +70,13 @@ export class PersonController {
     //         "StartDate": new Date("2017-10-16T17:32:00")
     //         }
     //     ];
-          
-    //     StudentMongooseModel.collection.insert(data, function (err, docs) { 
+
+    //     StudentMongooseModel.collection.insert(data, function (err, docs) {
     //         if (err){
     //             res.send(err);
     //         }
     //         res.json({ message: 'Successfully generated 5 sample documents!'});
     //     });
-    
+
     // }
 }

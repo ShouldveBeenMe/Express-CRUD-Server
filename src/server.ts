@@ -1,7 +1,7 @@
 import express from 'express';
 import * as bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import {AppRouter} from './router';
+import { AppRouter } from './router';
 import * as configFile from './config';
 import * as index from './index';
 
