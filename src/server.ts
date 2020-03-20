@@ -1,11 +1,11 @@
 import express from 'express';
 import * as bodyParser from 'body-parser';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import { AppRouter } from './router';
 import * as configFile from './config';
 import * as index from './index';
 
-const DEFAULT_PORT = configFile.DEFAULT_PORT;
+const { DEFAULT_PORT } = configFile;
 
 const portToListen = process.env.PORT || DEFAULT_PORT;
 const app = express();

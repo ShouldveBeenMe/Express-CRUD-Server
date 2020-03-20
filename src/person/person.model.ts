@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import Person from './person.interface';
+import { Person } from './person.interface';
 
 // const { Schema } = mongoose.Schema;
 
