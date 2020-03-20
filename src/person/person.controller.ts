@@ -1,52 +1,47 @@
-
 import * as mongoose from 'mongoose';
-import  {personModel} from './person.model';
+import { personModel } from './person.model';
 import { Request, Response } from 'express';
 
-export class PersonController { 
-
-    static addPerson (req: Request, res: Response) {   
-
+export class PersonController {
+    static addPerson(req: Request, res: Response) {
         let newPerson = new personModel(req.body);
 
         newPerson.save((err, data) => {
-            if (err){
+            if (err) {
                 res.send(err);
-            }    
+            }
             res.json(data);
         });
     }
 
-    static getPerson (req: Request, res: Response) {           
+    static getPerson(req: Request, res: Response) {
         personModel.find({}, (err, data) => {
-            if (err){
+            if (err) {
                 res.send(err);
             }
             res.json(data);
         });
     }
 
-
-    static updatePerson (req: Request, res: Response) {           
-        personModel.findOneAndUpdate({ _id: req.params.id }, req.body, 
-            (err, data) => {
-            if (err){
+    static updatePerson(req: Request, res: Response) {
+        personModel.findOneAndUpdate({ _id: req.params.id }, req.body, (err, data) => {
+            if (err) {
                 res.send(err);
             }
             res.json(data);
         });
     }
 
-    static deletePerson(req: Request, res: Response) {           
+    static deletePerson(req: Request, res: Response) {
         personModel.findOneAndRemove({ _id: req.params.id }, (err, data) => {
-            if (err){
+            if (err) {
                 res.send(err);
             }
-            res.json({ message: 'Successfully deleted student!'});
+            res.json({ message: 'Successfully deleted student!' });
         });
     }
 
-    // public generateDummyData (req: Request, res: Response) {     
+    // public generateDummyData (req: Request, res: Response) {
     //     var data = [
     //         {
     //         "FirstName":"Sally",
@@ -75,13 +70,13 @@ export class PersonController {
     //         "StartDate": new Date("2017-10-16T17:32:00")
     //         }
     //     ];
-          
-    //     StudentMongooseModel.collection.insert(data, function (err, docs) { 
+
+    //     StudentMongooseModel.collection.insert(data, function (err, docs) {
     //         if (err){
     //             res.send(err);
     //         }
     //         res.json({ message: 'Successfully generated 5 sample documents!'});
     //     });
-    
+
     // }
 }
