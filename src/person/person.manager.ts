@@ -11,11 +11,11 @@ export class PersonManager {
         return PersonRepo.getPerson(filter);
     }
 
-    static async update(personToUpdate: Person, filter: any) {
-        return PersonRepo.updatePerson(personToUpdate, filter);
+    static async updatePerson(personID: string, filter: any) {
+        return PersonRepo.updatePerson(personID, filter);
     }
 
-    static async deletePerson(personToDelete: Person) {
-        return PersonRepo.deletePerson(personToDelete);
+    static async deletePerson(personID: string) {
+        return PersonRepo.deletePerson(personID);
     }
 }

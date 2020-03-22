@@ -7,15 +7,15 @@ export class PersonRepo {
         return PersonModel.create(person);
     }
 
-    static async getPerson(filter: any) {
-        return PersonModel.find(filter);
+    static async getPerson(filters: any) {
+        return PersonModel.find(filters).exec();
     }
 
-    static async updatePerson(personToUpdate: Person, filter: any) {
-        return PersonModel.create(personToUpdate, filter);
+    static async updatePerson(personIDToUpdate: string, filters: any) {
+        return PersonModel.findByIdAndUpdate(personIDToUpdate, filters, { new: true }).exec();
     }
 
-    static async deletePerson(personToDelete: Person) {
-        return PersonModel.deleteOne(personToDelete);
+    static async deletePerson(personIDToDelete: string) {
+        return PersonModel.findByIdAndDelete(personIDToDelete);
     }
 }
