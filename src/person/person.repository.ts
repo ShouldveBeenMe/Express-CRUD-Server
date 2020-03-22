@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 // import { Request, Response } from 'express';
 import { PersonModel } from './person.model';
 import { Person } from './person.interface';
 
 export class PersonRepo {
     static async createPerson(person: Person) {
+        console.log('created');
         return PersonModel.create(person);
     }
 
@@ -16,6 +18,6 @@ export class PersonRepo {
     }
 
     static async deletePerson(personIDToDelete: string) {
-        return PersonModel.findByIdAndDelete(personIDToDelete);
+        return PersonModel.findByIdAndDelete(personIDToDelete).exec();
     }
 }

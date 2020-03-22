@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 // import mongoose, { Schema, Document } from 'mongoose';
 import { PersonRepo } from './person.repository';
 import { Person } from './person.interface';

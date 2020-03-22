@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Request, Response } from 'express';
-import { PersonModel } from './person.model';
 import { PersonManager } from './person.manager';
 
 export class PersonController {
     static async addPerson(req: Request, res: Response) {
+        console.log('created');
         res.json(await PersonManager.createPerson(req.body));
     }
 

@@ -4,8 +4,9 @@ import { Person } from './person.interface';
 // const { Schema } = mongoose.Schema;
 
 const PersonSchema = new Schema({
-    name: { type: String, required: true, max: 100 },
-    id: { type: Number, required: true },
+    klik: { type: String },
+    // name: { type: String, required: true },
+    // id: { type: Number, required: true },
 });
 
 // Export the model
