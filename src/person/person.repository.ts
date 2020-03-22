@@ -11,7 +11,7 @@ export class PersonRepo {
         return PersonModel.find(filter);
     }
 
-    static async update(personToUpdate: Person, filter: any) {
+    static async updatePerson(personToUpdate: Person, filter: any) {
         return PersonModel.create(personToUpdate, filter);
     }
 
