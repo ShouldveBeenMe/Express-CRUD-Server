@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
-import { personModel } from './person.model';
 import { Request, Response } from 'express';
+import { PersonModel } from './person.model';
 
 export class PersonController {
-    static addPerson(req: Request, res: Response) {
-        let newPerson = new personModel(req.body);
+    static async addPerson(req: Request, res: Response) {
+        const newPerson = new PersonModel(req.body);
 
         newPerson.save((err, data) => {
             if (err) {
@@ -14,8 +14,8 @@ export class PersonController {
         });
     }
 
-    static getPerson(req: Request, res: Response) {
-        personModel.find({}, (err, data) => {
+    static async getPerson(req: Request, res: Response) {
+        PersonModel.find({}, (err, data) => {
             if (err) {
                 res.send(err);
             }
@@ -23,8 +23,8 @@ export class PersonController {
         });
     }
 
-    static updatePerson(req: Request, res: Response) {
-        personModel.findOneAndUpdate({ _id: req.params.id }, req.body, (err, data) => {
+    static async updatePerson(req: Request, res: Response) {
+        PersonModel.findOneAndUpdate({ _id: req.params.id }, req.body, (err, data) => {
             if (err) {
                 res.send(err);
             }
@@ -32,8 +32,8 @@ export class PersonController {
         });
     }
 
-    static deletePerson(req: Request, res: Response) {
-        personModel.findOneAndRemove({ _id: req.params.id }, (err, data) => {
+    static async deletePerson(req: Request, res: Response) {
+        PersonModel.findOneAndRemove({ _id: req.params.id }, (err, data) => {
             if (err) {
                 res.send(err);
             }

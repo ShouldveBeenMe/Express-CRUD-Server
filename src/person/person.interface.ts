@@ -1,4 +1,4 @@
-// import { validate } from 'typescript-validator';
+import { validate } from 'class-validator';
 
 export interface Person {
     _id: string;

@@ -7,3 +7,5 @@ personRouter.get('/', PersonController.getPerson);
 personRouter.post('/', PersonController.addPerson);
 personRouter.put('/:id', PersonController.updatePerson);
 personRouter.delete('/:id', PersonController.deletePerson);
+
+export { personRouter };

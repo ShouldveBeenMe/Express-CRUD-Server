@@ -1,11 +1,21 @@
-import { Request, Response } from 'express';
-import { personModel } from './person.model';
+// import { Request, Response } from 'express';
+import { PersonModel } from './person.model';
 import { Person } from './person.interface';
 
-function createPerson(request: Request, response: Response) {
-    const personData: Person = request.body;
-    const createdPost = new personModel(personData);
-    createdPost.save().then(savedPost => {
-        response.send(savedPost);
-    });
+export class PersonRepo {
+    static async createPerson(person: Person) {
+        return PersonModel.create(person);
+    }
+
+    static async getPerson(filter: any) {
+        return PersonModel.find(filter);
+    }
+
+    static async update(personToUpdate: Person, filter: any) {
+        return PersonModel.create(personToUpdate, filter);
+    }
+
+    static async deletePerson(personToDelete: Person) {
+        return PersonModel.deleteOne(personToDelete);
+    }
 }
