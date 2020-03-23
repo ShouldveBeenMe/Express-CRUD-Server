@@ -4,7 +4,8 @@ import { PersonManager } from './person.manager';
 
 export class PersonController {
     static async addPerson(req: Request, res: Response) {
-        console.log('created');
+        // await console.log('to controller');
+        console.log(req.body);
         res.json(await PersonManager.createPerson(req.body));
     }
 

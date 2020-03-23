@@ -1,5 +1,5 @@
 import express from 'express';
-import * as bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 // import mongoose from 'mongoose';
 import { AppRouter } from './router';
 import * as configFile from './config';
@@ -13,10 +13,10 @@ export async function startServer() {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(AppRouter);
-    app.listen();
-    app.use(bodyParser.json());
 
     app.listen(portToListen, () => console.log(`Listening on port ${portToListen}\n`));
 
     index.connectToMongo();
 }
+
+// startServer();

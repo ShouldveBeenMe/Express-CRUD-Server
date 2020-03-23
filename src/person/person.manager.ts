@@ -5,18 +5,18 @@ import { Person } from './person.interface';
 
 export class PersonManager {
     static async createPerson(newPerson: Person) {
-        return PersonRepo.createPerson(newPerson);
+        return await PersonRepo.createPerson(newPerson);
     }
 
     static async getPerson(filter: any) {
-        return PersonRepo.getPerson(filter);
+        return await PersonRepo.getPerson(filter);
     }
 
     static async updatePerson(personID: string, filter: any) {
-        return PersonRepo.updatePerson(personID, filter);
+        return await PersonRepo.updatePerson(personID, filter);
     }
 
     static async deletePerson(personID: string) {
-        return PersonRepo.deletePerson(personID);
+        return await PersonRepo.deletePerson(personID);
     }
 }

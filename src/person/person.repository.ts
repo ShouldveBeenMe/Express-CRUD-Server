@@ -5,7 +5,7 @@ import { Person } from './person.interface';
 
 export class PersonRepo {
     static async createPerson(person: Person) {
-        console.log('created');
+        // console.log('created');
         return PersonModel.create(person);
     }
 
