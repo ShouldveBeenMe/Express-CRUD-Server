@@ -1,5 +1,8 @@
+/* eslint-disable max-classes-per-file */
 export class OperationError extends Error {
-    constructor(public message: string, public status: number, public name: string) { super(); }
+    constructor(public message: string, public status: number, public name: string) {
+        super();
+    }
 }
 
 export class InvalidInputError extends OperationError {

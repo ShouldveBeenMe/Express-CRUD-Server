@@ -20,7 +20,6 @@ async function dropDB() {
 async function startTest() {
     await dropDB();
     await startServer();
-
 }
 
 startTest();

@@ -5,6 +5,6 @@ export interface Group {
     id: string;
     name: string;
     parentGroupID: string;
-    persons?:string[];
+    persons?: string[];
     groups?: string[];
 }

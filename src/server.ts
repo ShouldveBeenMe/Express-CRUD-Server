@@ -15,8 +15,11 @@ export async function startServer() {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(AppRouter);
-    app.use(handlerErrors)
+    app.use(handlerErrors);
     app.listen(portToListen, () => console.log(`Listening on port ${portToListen}\n`));
+
+    // connect to mongo
+
     index.connectToMongo();
 }
 

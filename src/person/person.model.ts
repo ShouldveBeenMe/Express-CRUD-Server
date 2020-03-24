@@ -4,8 +4,8 @@ import { Person } from './person.interface';
 // const { Schema } = mongoose.Schema;
 
 const PersonSchema = new Schema({
-    id: { type: String, unique: true , required: true},
-    name: { type: String , required: true},
+    id: { type: String, unique: true, required: true },
+    name: { type: String, required: true },
     groups: { type: Array, required: false },
 });
 
