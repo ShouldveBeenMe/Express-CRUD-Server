@@ -35,5 +35,6 @@ export async function connectToMongo() {
     await mongoose.connect('mongodb://localhost/groupsDB', {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useFindAndModify: false,
     });
 }

@@ -15,12 +15,12 @@ export class PersonController {
 
     static async updatePerson(req: Request, res: Response) {
         const person = await PersonManager.updatePerson(req.params.id, req.body);
-        res.send(person);
+        res.json(person);
     }
 
     static async deletePerson(req: Request, res: Response) {
         const person = await PersonManager.deletePerson(req.params.id);
-        res.send(person);
+        res.json(person);
     }
 
     // public generateDummyData (req: Request, res: Response) {

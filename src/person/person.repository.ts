@@ -13,11 +13,11 @@ export class PersonRepo {
         return PersonModel.find(filters).exec();
     }
 
-    static async updatePerson(personIDToUpdate: string, filters: any) {
-        return PersonModel.findByIdAndUpdate(personIDToUpdate, filters, { new: true }).exec();
+    static async updatePerson(personIDToUpdate: string, update: unknown) {
+        return PersonModel.findOneAndUpdate({ id: personIDToUpdate }, update, { new: true }).exec();
     }
 
     static async deletePerson(personIDToDelete: string) {
-        return PersonModel.findByIdAndDelete(personIDToDelete).exec();
+        return PersonModel.findOneAndDelete({ id: personIDToDelete }).exec();
     }
 }

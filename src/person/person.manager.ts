@@ -26,8 +26,8 @@ export class PersonManager {
         }
     }
 
-    static async updatePerson(personID: string, filter: any) {
-        return await PersonRepo.updatePerson(personID, filter);
+    static async updatePerson(personID: string, update: unknown) {
+        return await PersonRepo.updatePerson(personID, update);
     }
 
     static async deletePerson(personID: string) {

@@ -13,7 +13,11 @@ personRouter.get('/', (req: Request, res: Response) => {
 personRouter.post('/', (req: Request, res: Response) => {
     PersonController.addPerson(req, res);
 });
-personRouter.put('/:id', PersonController.updatePerson);
-personRouter.delete('/:id', PersonController.deletePerson);
+personRouter.put('/:id', (req: Request, res: Response) => {
+    PersonController.updatePerson(req, res);
+});
+personRouter.delete('/:id', (req: Request, res: Response) => {
+    PersonController.deletePerson(req, res);
+});
 
 export { personRouter };
