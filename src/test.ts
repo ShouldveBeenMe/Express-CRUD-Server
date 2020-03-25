@@ -13,7 +13,7 @@ async function dropDB() {
         },
         () => {
             /* Drop the DB */
-            mongoose.connection.db.dropDatabase();
+            // mongoose.connection.db.dropDatabase();
         },
     );
 }

@@ -4,10 +4,12 @@
 import { DuplicateFieldError, DataBaseError } from '../errors';
 import { GroupRepo } from './group.repository';
 import { Group } from './group.interface';
+import { checkIfDuplicateExists } from '../funcUtils';
 
 export class GroupManager {
     static async createGroup(newGroup: Group) {
         try {
+            console.log('achieved');
             return await GroupRepo.createGroup(newGroup);
         } catch (e) {
             if (e.code === 11000 && e.name === 'MongoError') {
@@ -27,10 +29,17 @@ export class GroupManager {
     }
 
     static async updateGroup(GroupID: string, filter: any) {
-        return await GroupRepo.updateGroup(GroupID, filter);
+        if (this.getGroup({ id: GroupID })) {
+            return await GroupRepo.updateGroup(GroupID, filter);
+        }
+        throw Error('Group isnt exist');
     }
 
     static async deleteGroup(GroupID: string) {
         return await GroupRepo.deleteGroup(GroupID);
+    }
+
+    static isValidSubGroupsArray(subGroupArray: string[]) {
+        return checkIfDuplicateExists(subGroupArray);
     }
 }

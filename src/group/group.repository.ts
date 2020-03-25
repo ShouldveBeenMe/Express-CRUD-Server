@@ -15,11 +15,11 @@ export class GroupRepo {
         return GroupModel.find(filters).exec();
     }
 
-    static async updateGroup(groupIDToUpdate: string, filters: any) {
-        return GroupModel.findByIdAndUpdate(groupIDToUpdate, filters, { new: true }).exec();
+    static async updateGroup(groupIDToUpdate: string, update: unknown) {
+        return GroupModel.findOneAndUpdate({ id: groupIDToUpdate }, update, { new: true }).exec();
     }
 
     static async deleteGroup(groupIDToDelete: string) {
-        return GroupModel.findByIdAndDelete({ id: groupIDToDelete }).exec();
+        return GroupModel.findOneAndDelete({ id: groupIDToDelete }).exec();
     }
 }

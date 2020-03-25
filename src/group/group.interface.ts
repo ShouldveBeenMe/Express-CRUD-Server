@@ -2,7 +2,7 @@
 import { validate } from 'class-validator';
 
 export interface Group {
-    id: string;
+    // id: string;
     name: string;
     parentGroupID: string;
     persons?: string[];
