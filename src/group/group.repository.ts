@@ -6,7 +6,9 @@ import { Group } from './group.interface';
 export class GroupRepo {
     static async createGroup(group: Group) {
         // console.log('created');
-        return GroupModel.create(group);
+        return GroupModel.create(group, (err: Error) => {
+            if (err) throw err;
+        });
     }
 
     static async getGroup(filters: any) {
@@ -18,6 +20,6 @@ export class GroupRepo {
     }
 
     static async deleteGroup(groupIDToDelete: string) {
-        return GroupModel.findByIdAndDelete(groupIDToDelete).exec();
+        return GroupModel.findByIdAndDelete({ id: groupIDToDelete }).exec();
     }
 }

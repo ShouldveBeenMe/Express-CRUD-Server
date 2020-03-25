@@ -4,6 +4,7 @@
 import { DuplicateFieldError, DataBaseError } from '../errors';
 import { PersonRepo } from './person.repository';
 import { Person } from './person.interface';
+import { checkIfDuplicateExists } from '../funcUtils';
 
 export class PersonManager {
     static async createPerson(newPerson: Person) {
@@ -33,4 +34,6 @@ export class PersonManager {
     static async deletePerson(personID: string) {
         return await PersonRepo.deletePerson(personID);
     }
+
+    static checkIfPersonExists() {}
 }

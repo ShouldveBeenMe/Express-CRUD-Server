@@ -34,6 +34,7 @@ process.on('SIGINT', function() {
 export async function connectToMongo() {
     await mongoose.connect('mongodb://localhost/groupsDB', {
         useNewUrlParser: true,
+        useCreateIndex: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
     });
