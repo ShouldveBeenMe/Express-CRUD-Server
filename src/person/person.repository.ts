@@ -16,6 +16,7 @@ export class PersonRepo {
     }
 
     static updatePerson(personIDToUpdate: string, update: unknown) {
+        console.log(update);
         return PersonModel.findOneAndUpdate({ id: personIDToUpdate }, update, { new: true }).exec();
     }
 

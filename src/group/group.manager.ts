@@ -42,18 +42,21 @@ export class GroupManager {
             throw Error('Group isnt exist');
         }
         if (filter.hasOwnProperty('subGroups')) {
-            const grpArr = filter.hasOwnProperty('subGroups');
+            const grpArr = filter.subGroups;
             if (this.isValidSubGroupsArray(grpArr)) {
                 return await GroupRepo.updateGroup(GroupID, filter);
             }
+            throw Error('Group exists twice or more');
         }
         if (filter.hasOwnProperty('persons')) {
-            const perArr = filter.hasOwnProperty('persons');
+            const perArr = filter.persons;
             if (this.isValidPersonsArray(perArr)) {
                 return await GroupRepo.updateGroup(GroupID, filter);
             }
             return 'Person exists twice or more';
         }
+
+        return await GroupRepo.updateGroup(GroupID, filter);
     }
 
     static isValidPersonsArray(persArray: string[]) {

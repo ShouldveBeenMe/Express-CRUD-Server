@@ -3,5 +3,5 @@
 // }
 
 export function checkIfDuplicateExists(arr: string[]): boolean {
-    return new Set(arr).size !== arr.length;
+    return new Set(arr).size === arr.length;
 }

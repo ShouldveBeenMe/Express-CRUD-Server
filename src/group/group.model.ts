@@ -5,8 +5,8 @@ const GroupSchema = new Schema({
     id: { type: String, unique: true, required: true },
     name: { type: String, required: true },
     parentGroupID: { type: String },
-    persons: { type: Array, required: false },
-    subGroups: { type: Array, required: false },
+    persons: { type: [String], required: false },
+    subGroups: { type: [String], required: false },
 });
 
 // Export the model
