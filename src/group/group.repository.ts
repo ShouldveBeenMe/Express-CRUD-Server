@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 // import { Request, Response } from 'express';
 import { GroupModel } from './group.model';
@@ -6,20 +7,31 @@ import { Group } from './group.interface';
 export class GroupRepo {
     static async createGroup(group: Group) {
         // console.log('created');
-        return GroupModel.create(group, (err: Error) => {
+        return await GroupModel.create(group, (err: Error) => {
             if (err) throw err;
         });
     }
 
     static async getGroup(filters: any) {
-        return GroupModel.find(filters).exec();
+        // return await GroupModel.find(filters).exec();
+        // return new Promise<Group & Document>(resolve => {
+        //     GroupModel.find(filters, (err: Error, group: Group & Document) => {
+        //         resolve(group);
+        //     });
+        // });
+        const foundGroupPromise = await GroupModel.find(filters).exec();
+        return foundGroupPromise;
+
+        // GroupModel.find(filters)
+        //     .exec()
+        //     .then(result => foundGroup);
     }
 
     static async updateGroup(groupIDToUpdate: string, update: unknown) {
-        return GroupModel.findOneAndUpdate({ id: groupIDToUpdate }, update, { new: true }).exec();
+        return await GroupModel.findOneAndUpdate({ id: groupIDToUpdate }, update, { new: true }).exec();
     }
 
     static async deleteGroup(groupIDToDelete: string) {
-        return GroupModel.findOneAndDelete({ id: groupIDToDelete }).exec();
+        return await GroupModel.findOneAndDelete({ id: groupIDToDelete }).exec();
     }
 }

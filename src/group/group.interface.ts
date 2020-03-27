@@ -6,5 +6,5 @@ export interface Group {
     name: string;
     parentGroupID: string;
     persons?: string[];
-    groups?: string[];
+    subGroups?: string[];
 }

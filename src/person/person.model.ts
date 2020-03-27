@@ -9,7 +9,7 @@ const PersonSchema = new Schema({
         unique: [true, 'Person with this id is already exists'],
         required: [true, 'id isnt specified'],
     },
-    name: { type: String, required: true, minlength: [4, 'Too short'] },
+    name: { type: String, required: true },
     groups: { type: Array, required: false },
 });
 
