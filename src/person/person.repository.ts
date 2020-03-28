@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 // import { Request, Response } from 'express';
 import { runInNewContext } from 'vm';
+import { Schema } from 'mongoose';
 import { PersonModel } from './person.model';
 import { Person } from './person.interface';
+
+type objID = Schema.Types.ObjectId;
 
 export class PersonRepo {
     static createPerson(newPerson: Person) {
