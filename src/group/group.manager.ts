@@ -14,6 +14,15 @@ export class GroupManager {
     static async createGroup(newGroup: Group) {
         try {
             // console.log('achieved');
+            if (newGroup.subGroups) {
+                if (this.isSubGroupParentGroup(newGroup.id, newGroup.subGroups)) {
+                    throw Error("Group can't be it's own parent");
+                }
+                if (!this.areAllGroupsOrphans(newGroup.subGroups)) {
+                    throw Error("Group can't have two parent Groups");
+                }
+            }
+
             return await GroupRepo.createGroup(newGroup);
         } catch (e) {
             if (e.code === 11000 && e.name === 'MongoError') {
