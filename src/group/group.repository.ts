@@ -15,18 +15,8 @@ export class GroupRepo {
     }
 
     static async getGroup(filters: any) {
-        // return await GroupModel.find(filters).exec();
-        // return new Promise<Group & Document>(resolve => {
-        //     GroupModel.find(filters, (err: Error, group: Group & Document) => {
-        //         resolve(group);
-        //     });
-        // });
         const foundGroupPromise = await GroupModel.find(filters).exec();
         return foundGroupPromise;
-
-        // GroupModel.find(filters)
-        //     .exec()
-        //     .then(result => foundGroup);
     }
 
     static async updateGroup(groupIDToUpdate: string, update: unknown) {

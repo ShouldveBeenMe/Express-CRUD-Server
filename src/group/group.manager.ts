@@ -8,8 +8,6 @@ import { Group } from './group.interface';
 import { checkIfDuplicateExists } from '../funcUtils';
 import { PersonManager } from '../person/person.manager';
 
-type objID = Schema.Types.ObjectId;
-
 export class GroupManager {
     static async createGroup(newGroup: Group) {
         try {
@@ -52,31 +50,9 @@ export class GroupManager {
         if (!this.getGroup({ id: GroupID })) {
             throw Error('Group isnt exist');
         }
-        // if ('subGroups' in filter) {
-        //     const grpArr = filter.subGroups;
-        //     if (this.isValidSubGroupsArray(grpArr)) {
-        //         return await GroupRepo.updateGroup(GroupID, filter);
-        //     }
-        //     throw Error('Group exists twice or more');
-        // }
-        // if (filter.hasOwnProperty('persons')) {
-        //     const perArr = filter.persons;
-        //     if (this.isValidPersonsArray(perArr)) {
-        //         return await GroupRepo.updateGroup(GroupID, filter);
-        //     }
-        //     return 'Person exists twice or more';
-        // }
 
         return await GroupRepo.updateGroup(GroupID, filter);
     }
-
-    // static isValidPersonsArray(persArray: objID[]) {
-    //     return checkIfDuplicateExists(persArray);
-    // }
-
-    // static isValidSubGroupsArray(subGroupArray: objID[]) {
-    //     return checkIfDuplicateExists(subGroupArray);
-    // }
 
     static isSubGroupParentGroup(GroupID: string, subGrpArr: string[]): boolean {
         return subGrpArr.indexOf(GroupID) >= 0;

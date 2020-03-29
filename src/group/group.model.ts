@@ -12,23 +12,10 @@ const GroupSchema = new Schema({
     persons: {
         type: [String],
         required: false,
-        // validate: {
-        //     validator: (persArr: [string]) => {
-        //         return checkIfDuplicateExists(persArr);
-        //     },
-        // },
-        // message: 'Can no be two persons in the same group',
     },
     subGroups: {
         type: [String],
         required: false,
-        // maxlength: [6, 'OOPS'],
-        // validate: {
-        //     validator: (grpArr: [string]) => {
-        //         return checkIfDuplicateExists(grpArr);
-        //     },
-        // },
-        // message: 'Can no be two groups in the same group',
     },
 });
 
