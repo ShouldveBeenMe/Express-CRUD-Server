@@ -50,12 +50,47 @@ export class GroupManager {
         if (!this.getGroup({ id: GroupID })) {
             throw Error('Group isnt exist');
         }
-
+        if (this.isSubGroupAncestor(GroupID, filter.subGroup)) {
+            throw Error("Group can't be ancestor of itself");
+        }
         return await GroupRepo.updateGroup(GroupID, filter);
     }
 
     static isSubGroupParentGroup(GroupID: string, subGrpArr: string[]): boolean {
         return subGrpArr.indexOf(GroupID) >= 0;
+    }
+
+    static async isSubGroupAncestor(searchID: string, subGrps: string[]): boolean {
+        const subGroupsArray = subGrps;
+        if (subGroupsArray) {
+            const subgroupsSearchPromises = subGroupsArray.map(grpID => {
+                return GroupManager.searchForGroupID(searchID, grpID);
+            });
+            await Promise.all(subgroupsSearchPromises).then(result => {
+                const resArray = result;
+                return resArray.includes(true);
+            });
+        }
+        return false;
+    }
+
+    static async searchForGroupID(searchID: string, subGrpID: string): boolean {
+        GroupManager.getGroup({ id: subGrpID }).then(async subGroup => {
+            if (!subGroup) {
+                throw Error('subGroup doesnt exist');
+            }
+            const subGroupsArray = subGroup[0].subGroups;
+            if (subGroupsArray) {
+                const subgroupsSearchPromises = subGroupsArray.map(grpID => {
+                    return this.searchForGroupID(searchID, grpID);
+                });
+                await Promise.all(subgroupsSearchPromises).then(result => {
+                    const resArray = result;
+                    return resArray.includes(true);
+                });
+            }
+            return false;
+        });
     }
 
     static async areAllPeopleExist(persArray: string[]) {
