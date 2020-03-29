@@ -2,6 +2,7 @@
 /* eslint-disable no-return-await */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import mongoose, { Schema, Document } from 'mongoose';
+import { throws } from 'assert';
 import { DuplicateFieldError, DataBaseError } from '../errors';
 import { GroupRepo } from './group.repository';
 import { Group } from './group.interface';
@@ -50,14 +51,35 @@ export class GroupManager {
         if (!(await this.getGroup({ id: GroupID }))) {
             throw Error('Group isnt exist');
         }
+        if (!(await this.isValidSubGroupsArray(filter.subGroups))) {
+            throw Error("Can't have duplicate group");
+        }
+        if (!(await this.isSubGroupParentGroup(GroupID, filter.subGroups))) {
+            throw Error("Group can't be Subgroup of itself");
+        }
+        if (!(await this.areAllGroupsOrphans(filter.subGroup))) {
+            throw Error("A group can't be in two groups");
+        }
         if (await this.isSubGroupAncestor(GroupID, filter.subGroups)) {
             throw Error("Group can't be ancestor of itself");
         }
+        if (!(await this.isValidPersonsArray(filter.persons))) {
+            throw Error("Group Can't have duplicate person");
+        }
+
         return await GroupRepo.updateGroup(GroupID, filter);
     }
 
     static isSubGroupParentGroup(GroupID: string, subGrpArr: string[]): boolean {
         return subGrpArr.indexOf(GroupID) >= 0;
+    }
+
+    static isValidPersonsArray(persArr: string[]) {
+        return checkIfDuplicateExists(persArr);
+    }
+
+    static isValidSubGroupsArray(subGrpsArr: string[]) {
+        return checkIfDuplicateExists(subGrpsArr);
     }
 
     static async isSubGroupAncestor(searchID: string, subGrps: string[]) {
