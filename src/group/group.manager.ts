@@ -8,6 +8,7 @@ import { GroupRepo } from './group.repository';
 import { Group } from './group.interface';
 import { checkIfDuplicateExists } from '../funcUtils';
 import { PersonManager } from '../person/person.manager';
+import { PersonRepo } from '../person/person.repository';
 
 export class GroupManager {
     static async createGroup(newGroup: Group) {
@@ -22,7 +23,8 @@ export class GroupManager {
                 }
             }
 
-            return await GroupRepo.createGroup(newGroup);
+            const pCreatedGroup = await GroupRepo.createGroup(newGroup);
+            const updatedPersons = newGroup.persons && this.updateGroupToPersons(newGroup.id, newGroup.persons);
         } catch (e) {
             if (e.code === 11000 && e.name === 'MongoError') {
                 throw new DuplicateFieldError(`${e.keyValue.id} Already Exist`);
@@ -80,6 +82,29 @@ export class GroupManager {
 
     static isValidSubGroupsArray(subGrpsArr: string[]) {
         return checkIfDuplicateExists(subGrpsArr);
+    }
+
+    // static async setParentGroupsToPerson(GroupID: string) {
+    //     GroupManager.getGroup({ id: GroupID }).then(async groupToPut => {
+    //         if (!groupToPut) {
+    //             throw Error('Group to Put wasnt found');
+    //         }
+    //         const subGroupsArray = groupToPut[0].subGroups;
+    //         if (subGroupsArray) {
+    //             const subgroupsPutPromises = subGroupsArray.map(grpID => {
+    //                 return this.setParentGroupsToPerson(grpID);
+    //             });
+    //             await Promise.all(subgroupsPutPromises);
+    //         }
+    //         return await GroupManager.updatePersonsToGroup(groupToPut[0].persons);
+    //     });
+    // }
+
+    static async updateGroupToPersons(GroupID: string, persArray: string[]) {
+        const personsPutPromises = persArray.map(persID => {
+            return PersonManager.updatePerson(persID, { $addToSet: { groups: GroupID } });
+        });
+        await Promise.all(personsPutPromises);
     }
 
     static async isSubGroupAncestor(searchID: string, subGrps: string[]) {
