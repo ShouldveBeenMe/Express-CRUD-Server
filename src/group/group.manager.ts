@@ -174,42 +174,42 @@ export class GroupManager {
     }
 
     static async getMainGroupHierarchy(groupToShowObj: any) {
+        const groupToShow = await GroupManager.getGroup({ id: groupToShowObj.id });
+        if (!groupToShow) {
+            throw Error('Group to show wasnt found');
+        }
         let hierarchyToSend: hierarchyType = { personsDocs: [], groupDocs: [] };
+        hierarchyToSend.groupDocs = hierarchyToSend.groupDocs.concat(groupToShow);
         hierarchyToSend = await this.getGroupHierarchy(groupToShowObj.id, hierarchyToSend);
         return hierarchyToSend;
     }
 
     static async getGroupHierarchy(groupToShowID: string, hierarchyObj: hierarchyType) {
-        await GroupManager.getGroup({ id: groupToShowID }).then(
-            async (groupToShow: { persons: any }[], hierarchyObj: hierarchyType) => {
-                if (!groupToShow) {
-                    throw Error('Group to show wasnt found');
-                }
-                const subGroupsArray = groupToShow[0].subGroups;
+        const groupToShow = await GroupManager.getGroup({ id: groupToShowID });
+        if (!groupToShow) {
+            throw Error('Group to show wasnt found');
+        }
+        const subGroupsArray = groupToShow[0].subGroups;
 
-                if (subGroupsArray && subGroupsArray?.length > 0) {
-                    const subGroupsFound = await GroupRepo.getGroupsByIDs(subGroupsArray, {});
-                    const subgroupsShowPromises = subGroupsArray.map(async (grpID: string) => {
-                        const gotHierarchy = await this.getGroupHierarchy(grpID, hierarchyObj);
-                        console.log(gotHierarchy.groupDocs);
-                        console.log(gotHierarchy.personsDocs);
-                        // await hierarchyObj.groupDocs.concat(gotHierarchy.groupDocs);
-                        // await hierarchyObj.personsDocs.concat(gotHierarchy.personsDocs);
-                        return gotHierarchy;
-                    });
-                    await Promise.all(subgroupsShowPromises);
-                    hierarchyObj.groupDocs.concat(subGroupsFound);
-                }
+        if (subGroupsArray && subGroupsArray?.length > 0) {
+            const subGroupsFound = await GroupRepo.getGroupsByIDs(subGroupsArray, {});
+            const subgroupsShowPromises = subGroupsArray.map(async grpID => {
+                const gotHierarchy = await this.getGroupHierarchy(grpID, hierarchyObj);
+                await hierarchyObj.groupDocs.concat(gotHierarchy.groupDocs);
+                await hierarchyObj.personsDocs.concat(gotHierarchy.personsDocs);
+                return gotHierarchy;
+            });
+            await Promise.all(subgroupsShowPromises);
+            hierarchyObj.groupDocs = hierarchyObj.groupDocs.concat(subGroupsFound);
+        }
 
-                const personsArray = groupToShow[0].persons;
+        const personsArray = groupToShow[0].persons;
 
-                if (personsArray) {
-                    const personsFound = await PersonManager.getPersByIDs(personsArray, {});
-                    await Promise.all(personsFound);
-                    hierarchyObj.personsDocs.concat(personsFound);
-                }
-            },
-        );
+        if (personsArray) {
+            const personsFound = await PersonManager.getPersByIDs(personsArray, {});
+            await Promise.all(personsFound);
+            hierarchyObj.personsDocs = hierarchyObj.personsDocs.concat(personsFound);
+        }
         return hierarchyObj;
     }
 
