@@ -34,6 +34,4 @@ export class PersonManager {
     static async deletePerson(personID: string) {
         return await PersonRepo.deletePerson(personID);
     }
-
-    static checkIfPersonExists() {}
 }

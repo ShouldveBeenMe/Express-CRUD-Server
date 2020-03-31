@@ -8,22 +8,22 @@ import { Person } from './person.interface';
 type objID = Schema.Types.ObjectId;
 
 export class PersonRepo {
-    static createPerson(newPerson: Person) {
+    static async createPerson(newPerson: Person) {
         return PersonModel.create(newPerson, (err: Error) => {
             if (err) throw err;
         });
     }
 
-    static getPerson(filters: any) {
+    static async getPerson(filters: any) {
         return PersonModel.find(filters).exec();
     }
 
-    static updatePerson(personIDToUpdate: string, update: unknown) {
-        console.log(update);
+    static async updatePerson(personIDToUpdate: string, update: unknown) {
+        // console.log(update);
         return PersonModel.findOneAndUpdate({ id: personIDToUpdate }, update, { new: true }).exec();
     }
 
-    static deletePerson(personIDToDelete: string) {
+    static async deletePerson(personIDToDelete: string) {
         return PersonModel.findOneAndDelete({ id: personIDToDelete }).exec();
     }
 }
