@@ -27,6 +27,10 @@ export class PersonManager {
         }
     }
 
+    static async getPersByIDs(idArray: string[], filter: any) {
+        return await PersonRepo.getPersonsByIDs(idArray, filter);
+    }
+
     static async updatePerson(personID: string, update: unknown) {
         return await PersonRepo.updatePerson(personID, update);
     }

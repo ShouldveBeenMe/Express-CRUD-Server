@@ -8,7 +8,11 @@ import { GroupRepo } from './group.repository';
 import { Group } from './group.interface';
 import { checkIfDuplicateExists } from '../funcUtils';
 import { PersonManager } from '../person/person.manager';
-import { PersonRepo } from '../person/person.repository';
+
+interface hierarchyType {
+    groupDocs: Array<Document>;
+    personsDocs: Array<Document>;
+}
 
 export class GroupManager {
     static async createGroup(newGroup: Group) {
@@ -54,19 +58,19 @@ export class GroupManager {
         if (!(await this.getGroup({ id: GroupID }))) {
             throw Error('Group isnt exist');
         }
-        if (!(await this.isValidSubGroupsArray(filter.subGroups))) {
+        if (filter.subGroups && !(await this.isValidSubGroupsArray(filter.subGroups))) {
             throw Error("Can't have duplicate group");
         }
-        if (await this.isSubGroupParentGroup(GroupID, filter.subGroups)) {
+        if (filter.subGroups && (await this.isSubGroupParentGroup(GroupID, filter.subGroups))) {
             throw Error("Group can't be Subgroup of itself");
         }
-        if (!(await this.areAllGroupsOrphans(filter.subGroups))) {
+        if (filter.subGroups && !(await this.areAllGroupsOrphans(filter.subGroups))) {
             throw Error("A group can't be in two groups");
         }
-        if (await this.isSubGroupAncestor(GroupID, filter.subGroups)) {
+        if (filter.subGroups && (await this.isSubGroupAncestor(GroupID, filter.subGroups))) {
             throw Error("Group can't be ancestor of itself");
         }
-        if (!(await this.isValidPersonsArray(filter.persons))) {
+        if (filter.persons && !(await this.isValidPersonsArray(filter.persons))) {
             throw Error("Group Can't have duplicate person");
         }
 
@@ -74,7 +78,7 @@ export class GroupManager {
         const pUpdatedPersons =
             pUpdatedGroup?.persons && (await this.updateGroupToPersons(GroupID, pUpdatedGroup?.persons));
         const pUpdatedSubGroups =
-            pUpdatedGroup?.subGroups && this.updateParentGroupToSubGroups(GroupID, pUpdatedGroup?.subGroups);
+            pUpdatedGroup?.subGroups && (await this.updateParentGroupToSubGroups(GroupID, pUpdatedGroup?.subGroups));
         return pUpdatedGroup;
     }
 
@@ -99,7 +103,7 @@ export class GroupManager {
 
     static async updateParentGroupToSubGroups(GroupID: string, subGrpsArr: string[]) {
         const subGrpPutPromises = subGrpsArr.map(subGrpID => {
-            return PersonManager.updatePerson(subGrpID, { parentGroupID: GroupID });
+            return GroupManager.updateGroup(subGrpID, { parentGroupID: GroupID });
         });
         await Promise.all(subGrpPutPromises);
     }
@@ -167,6 +171,46 @@ export class GroupManager {
             return !resArray.includes(false);
         });
         return true;
+    }
+
+    static async getMainGroupHierarchy(groupToShowObj: any) {
+        let hierarchyToSend: hierarchyType = { personsDocs: [], groupDocs: [] };
+        hierarchyToSend = await this.getGroupHierarchy(groupToShowObj.id, hierarchyToSend);
+        return hierarchyToSend;
+    }
+
+    static async getGroupHierarchy(groupToShowID: string, hierarchyObj: hierarchyType) {
+        await GroupManager.getGroup({ id: groupToShowID }).then(
+            async (groupToShow: { persons: any }[], hierarchyObj: hierarchyType) => {
+                if (!groupToShow) {
+                    throw Error('Group to show wasnt found');
+                }
+                const subGroupsArray = groupToShow[0].subGroups;
+
+                if (subGroupsArray && subGroupsArray?.length > 0) {
+                    const subGroupsFound = await GroupRepo.getGroupsByIDs(subGroupsArray, {});
+                    const subgroupsShowPromises = subGroupsArray.map(async (grpID: string) => {
+                        const gotHierarchy = await this.getGroupHierarchy(grpID, hierarchyObj);
+                        console.log(gotHierarchy.groupDocs);
+                        console.log(gotHierarchy.personsDocs);
+                        // await hierarchyObj.groupDocs.concat(gotHierarchy.groupDocs);
+                        // await hierarchyObj.personsDocs.concat(gotHierarchy.personsDocs);
+                        return gotHierarchy;
+                    });
+                    await Promise.all(subgroupsShowPromises);
+                    hierarchyObj.groupDocs.concat(subGroupsFound);
+                }
+
+                const personsArray = groupToShow[0].persons;
+
+                if (personsArray) {
+                    const personsFound = await PersonManager.getPersByIDs(personsArray, {});
+                    await Promise.all(personsFound);
+                    hierarchyObj.personsDocs.concat(personsFound);
+                }
+            },
+        );
+        return hierarchyObj;
     }
 
     static async recursiveGroupDelete(groupToDeleteID: string) {

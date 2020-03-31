@@ -19,6 +19,13 @@ export class GroupRepo {
         return foundGroupPromise;
     }
 
+    static async getGroupsByIDs(idArray: string[], filters: any) {
+        const foundGroupPromise = await GroupModel.find({
+            id: { $in: idArray },
+        }).exec();
+        return foundGroupPromise;
+    }
+
     static async updateGroup(groupIDToUpdate: string, update: unknown) {
         return await GroupModel.findOneAndUpdate({ id: groupIDToUpdate }, update, {
             runValidators: true,

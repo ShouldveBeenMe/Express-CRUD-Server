@@ -10,6 +10,10 @@ const groupRouter: Router = Router();
 groupRouter.get('/', (req: Request, res: Response) => {
     GroupController.getGroup(req, res);
 });
+groupRouter.get('/hierarchy/', (req: Request, res: Response) => {
+    GroupController.getGroupHierarchy(req, res);
+});
+
 groupRouter.post('/', (req: Request, res: Response) => {
     GroupController.addGroup(req, res);
 });

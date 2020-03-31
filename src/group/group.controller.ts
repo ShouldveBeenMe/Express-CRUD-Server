@@ -13,6 +13,10 @@ export class GroupController {
         res.json(await GroupManager.getGroup(req.query));
     }
 
+    static async getGroupHierarchy(req: Request, res: Response) {
+        res.json(await GroupManager.getMainGroupHierarchy(req.query));
+    }
+
     static async updateGroup(req: Request, res: Response) {
         const group = await GroupManager.updateGroup(req.params.id, req.body);
         res.send(group);

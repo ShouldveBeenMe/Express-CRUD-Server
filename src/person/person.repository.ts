@@ -18,6 +18,13 @@ export class PersonRepo {
         return PersonModel.find(filters).exec();
     }
 
+    static async getPersonsByIDs(idArray: string[], filters: any) {
+        const foundPersonPromise = await PersonModel.find({
+            id: { $in: idArray },
+        }).exec();
+        return foundPersonPromise;
+    }
+
     static async updatePerson(personIDToUpdate: string, update: unknown) {
         // console.log(update);
         return PersonModel.findOneAndUpdate({ id: personIDToUpdate }, update, { new: true }).exec();
