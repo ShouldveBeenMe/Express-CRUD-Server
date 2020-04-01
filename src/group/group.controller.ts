@@ -17,6 +17,10 @@ export class GroupController {
         res.json(await GroupManager.getMainGroupHierarchy(req.query));
     }
 
+    static async getPersonFromGroup(req: Request, res: Response) {
+        res.json(await GroupManager.getPersonFromGroup(req.params.personname, req.query.id));
+    }
+
     static async updateGroup(req: Request, res: Response) {
         const group = await GroupManager.updateGroup(req.params.id, req.body);
         res.send(group);

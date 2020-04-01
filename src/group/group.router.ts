@@ -14,6 +14,10 @@ groupRouter.get('/hierarchy/', (req: Request, res: Response) => {
     GroupController.getGroupHierarchy(req, res);
 });
 
+groupRouter.get('/:personname/', (req: Request, res: Response) => {
+    GroupController.getPersonFromGroup(req, res);
+});
+
 groupRouter.post('/', (req: Request, res: Response) => {
     GroupController.addGroup(req, res);
 });

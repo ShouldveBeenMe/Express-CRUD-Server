@@ -145,6 +145,15 @@ export class GroupManager {
             });
     }
 
+    static async getPersonFromGroup(personName: string, GrpID: string): Promise<any> {
+        const foundGroup = await GroupManager.getGroup({ id: GrpID });
+        if (!foundGroup) {
+            throw Error('Group to search in wasnt found');
+        }
+        const personFound = await PersonManager.getPerson({ name: personName, groups: GrpID });
+        return personFound;
+    }
+
     static async areAllPeopleExist(persArray: string[]) {
         const areExist = persArray.map(persID => {
             return !!PersonManager.getPerson({ id: persID });
